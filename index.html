@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#126b61">
+  <meta name="description" content="A simple, private health organizer for appointments, medicine reminders and medical reports.">
+  <title>HealthMate AI — your personal health copilot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home" aria-label="HealthMate AI home">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span>HealthMate <span class="brand-ai">AI</span></span>
+      </a>
+      <div class="header-actions">
+        <label class="language-picker">
+          <span data-i18n="languageLabel">Language</span>
+          <select id="language-select" aria-label="Choose language" data-i18n-aria="languageLabel">
+            <option value="en">English</option>
+            <option value="te">తెలుగు</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <nav class="main-nav" aria-label="Main navigation" data-i18n-aria="navLabel">
+      <a href="#home" data-i18n="navHome">Home</a>
+      <a href="#appointments" data-i18n="navAppointments">Appointments</a>
+      <a href="#medicines" data-i18n="navMedicines">Medicine reminders</a>
+      <a href="#reports" data-i18n="navReports">Reports</a>
+      <a href="#assistant" data-i18n="navAssistant">Health assistant</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="home" class="welcome section-wrap">
+      <div class="welcome-copy">
+        <p class="eyebrow" data-i18n="welcomeEyebrow">YOUR PERSONAL HEALTH COPILOT</p>
+        <h1 data-i18n="welcomeTitle">Your health, a little easier.</h1>
+        <p class="welcome-text" data-i18n="welcomeText">Keep appointments, medicine reminders and health information together in one simple place.</p>
+        <p class="privacy-note"><span aria-hidden="true">🔒</span> <span data-i18n="privacyHome">Your information stays on this device. Reports are not saved.</span></p>
+      </div>
+      <div class="welcome-art" aria-hidden="true">
+        <span class="art-heart">♥</span>
+        <span class="art-cross">+</span>
+        <span class="art-dot"></span>
+      </div>
+    </section>
+
+    <section class="section-wrap quick-actions" aria-labelledby="quick-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow" data-i18n="startHere">START HERE</p>
+          <h2 id="quick-title" data-i18n="quickTitle">What would you like to do?</h2>
+        </div>
+      </div>
+      <div class="action-grid">
+        <a class="action-card action-teal" href="#appointments">
+          <span class="action-icon" aria-hidden="true">▦</span><span data-i18n="addAppointmentAction">Add an appointment</span><span class="action-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="action-card action-lilac" href="#medicines">
+          <span class="action-icon" aria-hidden="true">◷</span><span data-i18n="addMedicineAction">Set a medicine reminder</span><span class="action-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="action-card action-peach" href="#reports">
+          <span class="action-icon" aria-hidden="true">▤</span><span data-i18n="reportAction">Understand a report</span><span class="action-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="action-card action-blue" href="#assistant">
+          <span class="action-icon" aria-hidden="true">♡</span><span data-i18n="askAction">Ask a general health question</span><span class="action-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section id="appointments" class="section-wrap feature-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow" data-i18n="planAhead">PLAN AHEAD</p>
+          <h2 data-i18n="appointmentsTitle">Appointments</h2>
+          <p class="section-description" data-i18n="appointmentsDescription">Keep track of upcoming visits and check-ups.</p>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <form id="appointment-form" class="panel form-panel">
+          <h3 data-i18n="appointmentFormTitle">Add an appointment</h3>
+          <label for="appointment-title" data-i18n="appointmentName">What is the visit for?</label>
+          <input id="appointment-title" name="title" type="text" maxlength="100" required autocomplete="off" data-i18n-placeholder="appointmentNamePlaceholder" placeholder="For example, check-up">
+          <label for="appointment-provider" data-i18n="providerName">Doctor or clinic (optional)</label>
+          <input id="appointment-provider" name="provider" type="text" maxlength="100" autocomplete="off" data-i18n-placeholder="providerPlaceholder" placeholder="Name">
+          <label for="appointment-date" data-i18n="dateTime">Date and time</label>
+          <input id="appointment-date" name="scheduled_at" type="datetime-local" required>
+          <button class="button button-primary" type="submit" data-i18n="saveAppointment">Save appointment</button>
+        </form>
+        <div class="panel list-panel">
+          <h3 data-i18n="upcomingAppointments">Your appointments</h3>
+          <ul id="appointment-list" class="record-list" aria-live="polite"></ul>
+          <p id="appointment-empty" class="empty-state" data-i18n="noAppointments">No appointments yet. Add one when you are ready.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="medicines" class="section-wrap feature-section tinted-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow" data-i18n="dailyRoutine">DAILY ROUTINE</p>
+          <h2 data-i18n="medicinesTitle">Medicine reminders</h2>
+          <p class="section-description" data-i18n="medicinesDescription">Make a reminder for medicines already prescribed to you.</p>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <form id="medicine-form" class="panel form-panel">
+          <h3 data-i18n="medicineFormTitle">Add a reminder</h3>
+          <label for="medicine-name" data-i18n="medicineName">Medicine name</label>
+          <input id="medicine-name" name="name" type="text" maxlength="100" required autocomplete="off" data-i18n-placeholder="medicinePlaceholder" placeholder="Name on your prescription">
+          <label for="medicine-date" data-i18n="reminderDateTime">Reminder date and time</label>
+          <input id="medicine-date" name="scheduled_at" type="datetime-local" required>
+          <label for="medicine-instructions" data-i18n="medicineNotes">Notes from your clinician (optional)</label>
+          <input id="medicine-instructions" name="instructions" type="text" maxlength="250" autocomplete="off" data-i18n-placeholder="medicineNotesPlaceholder" placeholder="For example, follow the label">
+          <p class="form-hint" data-i18n="medicineSafety">Enter timing and instructions only as given by your healthcare professional or medicine label. This app does not send notifications.</p>
+          <button class="button button-primary" type="submit" data-i18n="saveReminder">Save reminder</button>
+        </form>
+        <div class="panel list-panel">
+          <h3 data-i18n="yourReminders">Your reminders</h3>
+          <ul id="medicine-list" class="record-list" aria-live="polite"></ul>
+          <p id="medicine-empty" class="empty-state" data-i18n="noReminders">No reminders yet. Add one when you are ready.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="reports" class="section-wrap feature-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow" data-i18n="plainLanguage">IN PLAIN LANGUAGE</p>
+          <h2 data-i18n="reportsTitle">Medical reports</h2>
+          <p class="section-description" data-i18n="reportsDescription">Get a short preview of readable text in a report. Your file is processed in memory and not saved.</p>
+        </div>
+      </div>
+      <div class="panel report-panel">
+        <form id="report-form">
+          <label class="upload-label" for="report-file" data-i18n="chooseReport">Choose a report file (.txt or .pdf)</label>
+          <input id="report-file" name="report" type="file" accept=".txt,.pdf,application/pdf,text/plain" required>
+          <p class="form-hint" data-i18n="reportLimits">Maximum 5 MB; PDFs up to 20 pages. Scanned images may not contain readable text.</p>
+          <button class="button button-primary" type="submit" data-i18n="summarizeReport">Summarize on this device</button>
+        </form>
+        <div id="report-result" class="result-box" hidden aria-live="polite">
+          <h3 data-i18n="summaryTitle">Report text preview</h3>
+          <p id="report-summary" class="result-text"></p>
+          <div id="report-explain-area" class="explain-area" hidden>
+            <label class="consent-label"><input id="report-consent" type="checkbox"><span data-i18n="reportConsent">I agree to send this report text to the configured AI service for an explanation.</span></label>
+            <button id="explain-report-button" class="button button-secondary" type="button" data-i18n="explainReport">Explain terms with AI</button>
+          </div>
+          <p id="report-explanation" class="result-text explanation" hidden></p>
+        </div>
+        <p class="disclaimer"><strong data-i18n="important">Important:</strong> <span data-i18n="reportDisclaimer">A text preview cannot interpret results or replace advice from your healthcare professional. Discuss your report with them.</span></p>
+      </div>
+    </section>
+
+    <section id="assistant" class="section-wrap feature-section tinted-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow" data-i18n="hereToHelp">HERE TO HELP</p>
+          <h2 data-i18n="assistantTitle">General health assistant</h2>
+          <p class="section-description" data-i18n="assistantDescription">Ask a general health question. This tool cannot diagnose or recommend treatment.</p>
+        </div>
+        <span id="ai-status" class="status-pill" data-i18n="checkingAI">Checking AI connection…</span>
+      </div>
+      <div class="panel assistant-panel">
+        <form id="assistant-form">
+          <label for="assistant-question" data-i18n="questionLabel">What would you like to know?</label>
+          <textarea id="assistant-question" rows="4" maxlength="1000" required data-i18n-placeholder="questionPlaceholder" placeholder="Ask a general question (do not include personal details)"></textarea>
+          <label class="consent-label"><input id="assistant-consent" type="checkbox"><span data-i18n="assistantConsent">If AI is configured, I agree to send this question to that AI service. Do not include names or other personal details.</span></label>
+          <button class="button button-primary" type="submit" data-i18n="sendQuestion">Get a safe response</button>
+        </form>
+        <div id="assistant-result" class="result-box assistant-result" hidden aria-live="polite">
+          <h3 data-i18n="responseTitle">Response</h3>
+          <p id="assistant-answer" class="result-text"></p>
+        </div>
+        <p class="disclaimer"><strong data-i18n="important">Important:</strong> <span data-i18n="assistantDisclaimer">This is general information, not medical advice. For symptoms or treatment, speak to a qualified healthcare professional. In an emergency, contact local emergency services.</span></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p data-i18n="footerPrivacy">HealthMate AI keeps records in a local SQLite database. This beginner project is designed for use on your own computer only.</p>
+    <p data-i18n="footerSample">No sample patient records are created.</p>
+  </footer>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
